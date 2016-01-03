@@ -1,0 +1,17 @@
+group 'com.github.jacek99'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.projectlombok:lombok:1.16.6"
+    compile "org.hibernate:hibernate-core:5.0.6.Final"
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
