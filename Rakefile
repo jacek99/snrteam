@@ -10,5 +10,5 @@ end
 
 desc "Generates Go model bindings from Thrift"
 task :thrift do
-  `thrift -r --gen go -out web thrift/model.thrift`
+  `thrift -r --gen go -out . thrift/model.thrift`
 end

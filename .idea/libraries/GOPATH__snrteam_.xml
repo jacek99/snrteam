@@ -1,26 +1,29 @@
 <component name="libraryTable">
   <library name="GOPATH &lt;snrteam&gt;">
     <CLASSES>
-      <root url="file://$USER_HOME$/Dev/go/src/github.com" />
-      <root url="file://$USER_HOME$/Dev/go/src/gopkg.in" />
-      <root url="file://$USER_HOME$/Dev/go/src/golang.org" />
-      <root url="file://$USER_HOME$/Dev/go/src/git.apache.org" />
+      <root url="file://$PROJECT_DIR$/../.." />
+      <root url="file://$PROJECT_DIR$/../../../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org" />
+      <root url="file://$PROJECT_DIR$/../../../git.apache.org" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
     <excluded>
-      <root url="file://$USER_HOME$/Dev/go/src/git.apache.org/thrift.git/.git" />
-      <root url="file://$USER_HOME$/Dev/go/src/golang.org/x/net/html/charset/testdata" />
-      <root url="file://$USER_HOME$/Dev/go/src/github.com/manucorporat/sse/.git" />
-      <root url="file://$USER_HOME$/Dev/go/src/github.com/gin-gonic/gin/.git" />
-      <root url="file://$USER_HOME$/Dev/go/src/golang.org/x/net/http2/testdata" />
-      <root url="file://$USER_HOME$/Dev/go/src/golang.org/x/net/html/testdata" />
-      <root url="file://$USER_HOME$/Dev/go/src/golang.org/x/net/.git" />
-      <root url="file://$USER_HOME$/Dev/go/src/github.com/mattn/go-colorable/_example" />
-      <root url="file://$USER_HOME$/Dev/go/src/gopkg.in/bluesuncorp/validator.v5/.git" />
-      <root url="file://$USER_HOME$/Dev/go/src/github.com/mattn/go-colorable/.git" />
-      <root url="file://$USER_HOME$/Dev/go/src/github.com/boltdb/bolt/.git" />
+      <root url="file://$PROJECT_DIR$/../../../git.apache.org/thrift.git/.git" />
+      <root url="file://$PROJECT_DIR$/../../manucorporat/sse/.git" />
+      <root url="file://$PROJECT_DIR$/.git" />
+      <root url="file://$PROJECT_DIR$/../../gin-gonic/gin/.git" />
+      <root url="file://$PROJECT_DIR$/.idea" />
+      <root url="file://$PROJECT_DIR$/../../mattn/go-colorable/_example" />
+      <root url="file://$PROJECT_DIR$/../../boltdb/boltd/.git" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/.git" />
+      <root url="file://$PROJECT_DIR$/../../../gopkg.in/bluesuncorp/validator.v5/.git" />
+      <root url="file://$PROJECT_DIR$/../../mattn/go-colorable/.git" />
       <root url="file://$PROJECT_DIR$" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/html/charset/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/http2/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/html/testdata" />
+      <root url="file://$PROJECT_DIR$/../../boltdb/bolt/.git" />
     </excluded>
   </library>
 </component>
