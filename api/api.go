@@ -12,4 +12,3 @@ func InitRouter(router *gin.Engine) {
 
 	router.GET("/api/users", getAllUsers)
 }
-

@@ -14,10 +14,13 @@
       <root url="file://$PROJECT_DIR$/.git" />
       <root url="file://$PROJECT_DIR$/../../gin-gonic/gin/.git" />
       <root url="file://$PROJECT_DIR$/.idea" />
+      <root url="file://$PROJECT_DIR$/../../../gopkg.in/yaml.v2/.git" />
+      <root url="file://$PROJECT_DIR$/../../nicksnyder/go-i18n/goi18n/testdata" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/.git" />
       <root url="file://$PROJECT_DIR$/../../mattn/go-colorable/_example" />
       <root url="file://$PROJECT_DIR$/../../boltdb/boltd/.git" />
-      <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/.git" />
       <root url="file://$PROJECT_DIR$/../../../gopkg.in/bluesuncorp/validator.v5/.git" />
+      <root url="file://$PROJECT_DIR$/../../nicksnyder/go-i18n/.git" />
       <root url="file://$PROJECT_DIR$/../../mattn/go-colorable/.git" />
       <root url="file://$PROJECT_DIR$" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/net/html/charset/testdata" />
