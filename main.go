@@ -1,10 +1,10 @@
 package main
 
 import (
-	"log"
+	"github.com/jacek99/snrteam/api"
 	"github.com/jacek99/snrteam/database"
 	"github.com/jacek99/snrteam/server"
-	"github.com/jacek99/snrteam/api"
+	"log"
 )
 
 func main() {
