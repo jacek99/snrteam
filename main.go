@@ -4,8 +4,8 @@ import (
 	"log"
 	"github.com/jacek99/snrteam/database"
 	"github.com/jacek99/snrteam/server"
+	"github.com/jacek99/snrteam/api"
 )
-
 
 func main() {
 
@@ -13,6 +13,7 @@ func main() {
 	defer database.Database.Close()
 
 	// run web server
+	api.InitRouter(server.Router)
 	err := server.Server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)

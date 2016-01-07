@@ -1,6 +1,5 @@
 package server
 
-
 import (
 	"net/http"
 	"time"
@@ -29,10 +28,6 @@ func init() {
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
-
-	Router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello World")
-	})
 
 }
 
