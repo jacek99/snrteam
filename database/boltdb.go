@@ -1,12 +1,13 @@
 package database
+
 import (
+	"fmt"
 	"github.com/boltdb/bolt"
+	"github.com/jacek99/snrteam/common"
+	"log"
 	"os"
 	"path"
 	"time"
-	"log"
-	"fmt"
-	"github.com/jacek99/snrteam/common"
 )
 
 var Database *bolt.DB = nil
@@ -27,4 +28,3 @@ func init() {
 		log.Fatal(err)
 	}
 }
-

@@ -1,5 +1,7 @@
 package main
 
+//go:generate gengen -o . github.com/jacek99/snrteam/generics string
+
 import (
 	"github.com/jacek99/snrteam/api"
 	"github.com/jacek99/snrteam/database"

@@ -1,14 +1,13 @@
 package server
 
 import (
-	"net/http"
-	"time"
-	"os"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jacek99/snrteam/common"
+	"net/http"
+	"os"
+	"time"
 )
-
 
 var Server *http.Server
 var Router *gin.Engine
@@ -22,7 +21,7 @@ func init() {
 	}
 
 	Server = &http.Server{
-		Addr:           fmt.Sprintf(":%s",port),
+		Addr:           fmt.Sprintf(":%s", port),
 		Handler:        Router,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
@@ -30,5 +29,3 @@ func init() {
 	}
 
 }
-
-

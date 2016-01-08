@@ -9,3 +9,6 @@
 
 # databases
 *.db
+
+# build folders
+.build
