@@ -1,7 +1,6 @@
 package database
 
 import (
-	"container/list"
 	"github.com/boltdb/bolt"
 	"github.com/jacek99/snrteam/model"
 	"log"
@@ -27,9 +26,15 @@ func init() {
 	}
 }
 
+func thrift2User(v []byte) *model.User {
+	user := model.NewUser()
+	model.Thrift2Go(v,user)
+	return user
+}
+
 func GetAllUsers() ([]model.User, error) {
 
-	l := list.New()
+	users := []model.User{}
 
 	err := Database.View(func(tx *bolt.Tx) error {
 
@@ -37,23 +42,16 @@ func GetAllUsers() ([]model.User, error) {
 		c := b.Cursor()
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
-			l.PushBack(model.Thrift2Go(v,model.NewUser()))
+			users = append(users, *thrift2User(v))
 		}
 
 		return nil
 	})
 	if err != nil {
 		return nil, err
+	} else {
+		return users, nil
 	}
-
-	// convert list to array
-	users := make([]model.User, l.Len())
-	index := 0
-	for e := l.Front(); e != nil; e = e.Next() {
-		users[index] = e.Value.(model.User)
-		index++
-	}
-	return users, nil
 }
 
 // Saves a user, if it exists error occurs
