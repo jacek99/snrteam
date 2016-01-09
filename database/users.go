@@ -54,6 +54,29 @@ func GetAllUsers() ([]model.User, error) {
 	}
 }
 
+// may return null if not found
+func GetUser(userId string) (*model.User, error) {
+
+	var user *model.User
+
+	err := Database.View(func(tx *bolt.Tx) error {
+
+		b := tx.Bucket([]byte(user_bucket_name))
+		data := b.Get([]byte(userId))
+		if data != nil {
+			user = thrift2User(data)
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	} else {
+		return user, nil
+	}
+
+}
+
 // Saves a user, if it exists error occurs
 func SaveUser(user model.User) error {
 	return nil

@@ -5,9 +5,10 @@ CURRENT_FOLDER =  File.dirname(__FILE__)
 
 desc "Install dependencies"
 task :deps do
-  `go get github.com/gin-gonic/gin`
-  `go get git.apache.org/thrift.git/lib/go/thrift/...`
-  `go get github.com/boltdb/bolt/...`
+  exec CURRENT_FOLDER, "go get github.com/gin-gonic/gin"
+  exec CURRENT_FOLDER, "go get git.apache.org/thrift.git/lib/go/thrift/..."
+  exec CURRENT_FOLDER, "go get github.com/boltdb/bolt/..."
+  exec CURRENT_FOLDER, "go get -u github.com/nicksnyder/go-i18n/goi18n"
 end
 
 desc "Generates Go model bindings from Thrift"

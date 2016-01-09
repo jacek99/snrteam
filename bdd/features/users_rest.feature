@@ -11,18 +11,27 @@ Feature: User REST Service
     []
     """
 
-#  @country_get_error
-#  Scenario Outline: Query error handling
-#    When "<user>:test" sends <method> "/myapp/services/rest/country/WRONG_ID"
-#    Then I expect HTTP code 404
-#
-#  Examples:
-#    | method  | user  |
-#    | GET     | read  |
-#    | PATCH   | admin |
-#    | DELETE  | admin |
-#
-#
+  @user_get_error
+  Scenario Outline: Query error handling
+    When "<user>:test" sends <method> "/snrteam/api/users/WRONG_ID"
+    Then I expect HTTP code 404
+    And I expect JSON equivalent to
+    """
+      {
+        "Message": "User 'WRONG_ID' not found",
+        "EntityType": "User",
+        "EntityField": "UserId",
+        "EntityId": "WRONG_ID"
+      }
+    """
+
+    Examples:
+      | method  | user  |
+      | GET     | read  |
+      #| PATCH   | admin |
+      #| DELETE  | admin |
+
+
 #  @country_add
 #  Scenario: Add one
 #    # add and return JSON as part of the payload
