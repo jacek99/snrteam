@@ -7,7 +7,7 @@ import (
 
 const DEFAULT_LANGUAGE = "en-us"
 
-var SUPPORTED_LANGES = map[string]interface{}{
+var SUPPORTED_LANGUAGES = map[string]interface{}{
 	"en-US": nil,
 	"es": nil,
 }
@@ -44,7 +44,7 @@ func getRequestLanguage(c *gin.Context) string {
 	if lang == "" {
 		return DEFAULT_LANGUAGE
 	} else {
-		_, ok := SUPPORTED_LANGES[lang]
+		_, ok := SUPPORTED_LANGUAGES[lang]
 		if ok {
 			return lang
 		} else {

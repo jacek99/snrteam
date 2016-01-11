@@ -13,21 +13,23 @@ Feature: User REST Service
 
   @user_get_error
   Scenario Outline: Query error handling
+    Given I set HTTP header "Accept-Language" to "<lang>"
     When "<user>:test" sends <method> "/snrteam/api/users/WRONG_ID"
     Then I expect HTTP code 404
     And I expect JSON equivalent to
     """
       {
-        "Message": "User 'WRONG_ID' not found",
-        "EntityType": "User",
+        "Message": "<msg>",
+        "EntityType": "<type>",
         "EntityField": "UserId",
         "EntityId": "WRONG_ID"
       }
     """
 
     Examples:
-      | method  | user  |
-      | GET     | read  |
+      | method  | user  | lang  | msg                             | type        |
+      | GET     | read  | en-US | User 'WRONG_ID' not found       | User        |
+      | GET     | read  | es    | Usuario 'WRONG_ID' no encontrado| Usuario     |
       #| PATCH   | admin |
       #| DELETE  | admin |
 

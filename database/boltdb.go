@@ -10,6 +10,18 @@ import (
 	"time"
 )
 
+const (
+	RECORD_DOES_NOT_EXIST = 0
+	RECORD_ALREADY_EXISTS = 1
+	QUERY_ERROR
+)
+
+// used for providing more error context on update/delete operations
+type WriteError struct {
+	ErrorType int
+	Message string
+}
+
 var Database *bolt.DB = nil
 
 func init() {

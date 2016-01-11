@@ -77,7 +77,41 @@ func GetUser(userId string) (*model.User, error) {
 
 }
 
-// Saves a user, if it exists error occurs
-func SaveUser(user model.User) error {
-	return nil
-}
+//// Saves a user, if it exists error occurs
+//func SaveUser(user model.User)  WriteError  {
+//	user, err := GetUser(user.UserId)
+//	if err != nil {
+//		return nil, WriteError{QUERY_ERROR, err}
+//	}
+//
+//	if user == nil {
+//		err = Database.Update(func(tx *bolt.Tx) error {
+//			b := tx.Bucket([]byte(user_bucket_name))
+//			return b.Put([]byte(user.UserId),model.Go2Thrift(user))
+//		})
+//		return user, err
+//	} else {
+//		// record already exists
+//		return nil, WriteError{RECORD_ALREADY_EXISTS, nil}
+//	}}
+//
+//// update an existing user
+//func UpdateUser(user *model.User) (*model.User, error) {
+//	user, err := GetUser(user.UserId)
+//	if err != nil {
+//		return nil, error
+//	}
+//
+//	if user != nil {
+//		err = Database.Update(func(tx *bolt.Tx) error {
+//			b := tx.Bucket([]byte(user_bucket_name))
+//			return b.Put([]byte(user.UserId),model.Go2Thrift(user))
+//		})
+//		return user, err
+//	} else {
+//		// TODO: need to return error type
+//		return nil, "User does not exist"
+//	}
+//}
+
+
