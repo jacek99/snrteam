@@ -259,12 +259,13 @@ func (p *Date) String() string {
 
 type User struct {
 	UserId       int64  `thrift:"user_id,1,required"`
-	EmailAddress string `thrift:"email_address,2,required"`
-	FirstName    string `thrift:"first_name,3,required"`
-	LastName     string `thrift:"last_name,4,required"`
-	BirthDate    *Date  `thrift:"birth_date,5,required"`
-	CreationDate *Date  `thrift:"creation_date,6,required"`
-	Photo        []byte `thrift:"photo,7"`
+	UserName     string `thrift:"user_name,2,required"`
+	EmailAddress string `thrift:"email_address,3,required"`
+	FirstName    string `thrift:"first_name,4,required"`
+	LastName     string `thrift:"last_name,5,required"`
+	BirthDate    *Date  `thrift:"birth_date,6,required"`
+	CreationDate *Date  `thrift:"creation_date,7,required"`
+	Photo        []byte `thrift:"photo,8"`
 }
 
 func NewUser() *User {
@@ -316,6 +317,10 @@ func (p *User) Read(iprot thrift.TProtocol) error {
 			if err := p.readField7(iprot); err != nil {
 				return err
 			}
+		case 8:
+			if err := p.readField8(iprot); err != nil {
+				return err
+			}
 		default:
 			if err := iprot.Skip(fieldTypeId); err != nil {
 				return err
@@ -344,7 +349,7 @@ func (p *User) readField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 2: %s")
 	} else {
-		p.EmailAddress = v
+		p.UserName = v
 	}
 	return nil
 }
@@ -353,7 +358,7 @@ func (p *User) readField3(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 3: %s")
 	} else {
-		p.FirstName = v
+		p.EmailAddress = v
 	}
 	return nil
 }
@@ -362,12 +367,21 @@ func (p *User) readField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return fmt.Errorf("error reading field 4: %s")
 	} else {
-		p.LastName = v
+		p.FirstName = v
 	}
 	return nil
 }
 
 func (p *User) readField5(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return fmt.Errorf("error reading field 5: %s")
+	} else {
+		p.LastName = v
+	}
+	return nil
+}
+
+func (p *User) readField6(iprot thrift.TProtocol) error {
 	p.BirthDate = NewDate()
 	if err := p.BirthDate.Read(iprot); err != nil {
 		return fmt.Errorf("%T error reading struct: %s", p.BirthDate)
@@ -375,7 +389,7 @@ func (p *User) readField5(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *User) readField6(iprot thrift.TProtocol) error {
+func (p *User) readField7(iprot thrift.TProtocol) error {
 	p.CreationDate = NewDate()
 	if err := p.CreationDate.Read(iprot); err != nil {
 		return fmt.Errorf("%T error reading struct: %s", p.CreationDate)
@@ -383,9 +397,9 @@ func (p *User) readField6(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *User) readField7(iprot thrift.TProtocol) error {
+func (p *User) readField8(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadBinary(); err != nil {
-		return fmt.Errorf("error reading field 7: %s")
+		return fmt.Errorf("error reading field 8: %s")
 	} else {
 		p.Photo = v
 	}
@@ -417,6 +431,9 @@ func (p *User) Write(oprot thrift.TProtocol) error {
 	if err := p.writeField7(oprot); err != nil {
 		return err
 	}
+	if err := p.writeField8(oprot); err != nil {
+		return err
+	}
 	if err := oprot.WriteFieldStop(); err != nil {
 		return fmt.Errorf("%T write field stop error: %s", err)
 	}
@@ -440,85 +457,98 @@ func (p *User) writeField1(oprot thrift.TProtocol) (err error) {
 }
 
 func (p *User) writeField2(oprot thrift.TProtocol) (err error) {
-	if err := oprot.WriteFieldBegin("email_address", thrift.STRING, 2); err != nil {
-		return fmt.Errorf("%T write field begin error 2:email_address: %s", p, err)
+	if err := oprot.WriteFieldBegin("user_name", thrift.STRING, 2); err != nil {
+		return fmt.Errorf("%T write field begin error 2:user_name: %s", p, err)
 	}
-	if err := oprot.WriteString(string(p.EmailAddress)); err != nil {
-		return fmt.Errorf("%T.email_address (2) field write error: %s", p)
+	if err := oprot.WriteString(string(p.UserName)); err != nil {
+		return fmt.Errorf("%T.user_name (2) field write error: %s", p)
 	}
 	if err := oprot.WriteFieldEnd(); err != nil {
-		return fmt.Errorf("%T write field end error 2:email_address: %s", p, err)
+		return fmt.Errorf("%T write field end error 2:user_name: %s", p, err)
 	}
 	return err
 }
 
 func (p *User) writeField3(oprot thrift.TProtocol) (err error) {
-	if err := oprot.WriteFieldBegin("first_name", thrift.STRING, 3); err != nil {
-		return fmt.Errorf("%T write field begin error 3:first_name: %s", p, err)
+	if err := oprot.WriteFieldBegin("email_address", thrift.STRING, 3); err != nil {
+		return fmt.Errorf("%T write field begin error 3:email_address: %s", p, err)
 	}
-	if err := oprot.WriteString(string(p.FirstName)); err != nil {
-		return fmt.Errorf("%T.first_name (3) field write error: %s", p)
+	if err := oprot.WriteString(string(p.EmailAddress)); err != nil {
+		return fmt.Errorf("%T.email_address (3) field write error: %s", p)
 	}
 	if err := oprot.WriteFieldEnd(); err != nil {
-		return fmt.Errorf("%T write field end error 3:first_name: %s", p, err)
+		return fmt.Errorf("%T write field end error 3:email_address: %s", p, err)
 	}
 	return err
 }
 
 func (p *User) writeField4(oprot thrift.TProtocol) (err error) {
-	if err := oprot.WriteFieldBegin("last_name", thrift.STRING, 4); err != nil {
-		return fmt.Errorf("%T write field begin error 4:last_name: %s", p, err)
+	if err := oprot.WriteFieldBegin("first_name", thrift.STRING, 4); err != nil {
+		return fmt.Errorf("%T write field begin error 4:first_name: %s", p, err)
 	}
-	if err := oprot.WriteString(string(p.LastName)); err != nil {
-		return fmt.Errorf("%T.last_name (4) field write error: %s", p)
+	if err := oprot.WriteString(string(p.FirstName)); err != nil {
+		return fmt.Errorf("%T.first_name (4) field write error: %s", p)
 	}
 	if err := oprot.WriteFieldEnd(); err != nil {
-		return fmt.Errorf("%T write field end error 4:last_name: %s", p, err)
+		return fmt.Errorf("%T write field end error 4:first_name: %s", p, err)
 	}
 	return err
 }
 
 func (p *User) writeField5(oprot thrift.TProtocol) (err error) {
-	if p.BirthDate != nil {
-		if err := oprot.WriteFieldBegin("birth_date", thrift.STRUCT, 5); err != nil {
-			return fmt.Errorf("%T write field begin error 5:birth_date: %s", p, err)
-		}
-		if err := p.BirthDate.Write(oprot); err != nil {
-			return fmt.Errorf("%T error writing struct: %s", p.BirthDate)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 5:birth_date: %s", p, err)
-		}
+	if err := oprot.WriteFieldBegin("last_name", thrift.STRING, 5); err != nil {
+		return fmt.Errorf("%T write field begin error 5:last_name: %s", p, err)
+	}
+	if err := oprot.WriteString(string(p.LastName)); err != nil {
+		return fmt.Errorf("%T.last_name (5) field write error: %s", p)
+	}
+	if err := oprot.WriteFieldEnd(); err != nil {
+		return fmt.Errorf("%T write field end error 5:last_name: %s", p, err)
 	}
 	return err
 }
 
 func (p *User) writeField6(oprot thrift.TProtocol) (err error) {
-	if p.CreationDate != nil {
-		if err := oprot.WriteFieldBegin("creation_date", thrift.STRUCT, 6); err != nil {
-			return fmt.Errorf("%T write field begin error 6:creation_date: %s", p, err)
+	if p.BirthDate != nil {
+		if err := oprot.WriteFieldBegin("birth_date", thrift.STRUCT, 6); err != nil {
+			return fmt.Errorf("%T write field begin error 6:birth_date: %s", p, err)
 		}
-		if err := p.CreationDate.Write(oprot); err != nil {
-			return fmt.Errorf("%T error writing struct: %s", p.CreationDate)
+		if err := p.BirthDate.Write(oprot); err != nil {
+			return fmt.Errorf("%T error writing struct: %s", p.BirthDate)
 		}
 		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 6:creation_date: %s", p, err)
+			return fmt.Errorf("%T write field end error 6:birth_date: %s", p, err)
 		}
 	}
 	return err
 }
 
 func (p *User) writeField7(oprot thrift.TProtocol) (err error) {
+	if p.CreationDate != nil {
+		if err := oprot.WriteFieldBegin("creation_date", thrift.STRUCT, 7); err != nil {
+			return fmt.Errorf("%T write field begin error 7:creation_date: %s", p, err)
+		}
+		if err := p.CreationDate.Write(oprot); err != nil {
+			return fmt.Errorf("%T error writing struct: %s", p.CreationDate)
+		}
+		if err := oprot.WriteFieldEnd(); err != nil {
+			return fmt.Errorf("%T write field end error 7:creation_date: %s", p, err)
+		}
+	}
+	return err
+}
+
+func (p *User) writeField8(oprot thrift.TProtocol) (err error) {
 	if p.Photo != nil {
 		if p.IsSetPhoto() {
-			if err := oprot.WriteFieldBegin("photo", thrift.BINARY, 7); err != nil {
-				return fmt.Errorf("%T write field begin error 7:photo: %s", p, err)
+			if err := oprot.WriteFieldBegin("photo", thrift.BINARY, 8); err != nil {
+				return fmt.Errorf("%T write field begin error 8:photo: %s", p, err)
 			}
 			if err := oprot.WriteBinary(p.Photo); err != nil {
-				return fmt.Errorf("%T.photo (7) field write error: %s", p)
+				return fmt.Errorf("%T.photo (8) field write error: %s", p)
 			}
 			if err := oprot.WriteFieldEnd(); err != nil {
-				return fmt.Errorf("%T write field end error 7:photo: %s", p, err)
+				return fmt.Errorf("%T write field end error 8:photo: %s", p, err)
 			}
 		}
 	}

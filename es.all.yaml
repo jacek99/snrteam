@@ -1,5 +1,5 @@
 - id: user_not_found
-  translation: Usuario '{{.UserId}}' no encontrado
+  translation: Usuario '{{.UserName}}' no encontrado
 
 - id: user
   translation: Usuario

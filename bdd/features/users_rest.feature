@@ -21,7 +21,7 @@ Feature: User REST Service
       {
         "Message": "<msg>",
         "EntityType": "<type>",
-        "EntityField": "UserId",
+        "EntityField": "UserName",
         "EntityId": "WRONG_ID"
       }
     """

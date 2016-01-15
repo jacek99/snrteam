@@ -21,12 +21,18 @@ type RestError struct {
 	EntityId interface{}
 }
 
+// 500 errors only
+type RestSystemError struct {
+	Message string
+}
+
+
 func InitRouter(router *gin.Engine) {
 	// REST API
 	rest := router.Group("/snrteam")
 	{
 		rest.GET("/api/users", getAllUsers)
-		rest.GET("/api/users/:UserId", getUser)
+		rest.GET("/api/users/:UserName", getUser)
 	}
 
 	// HTML APIs

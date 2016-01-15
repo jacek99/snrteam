@@ -45,12 +45,13 @@ struct Date {
 
 struct User {
 	1: required i64 user_id,
-	2: required string email_address,
-	3: required string first_name,
-	4: required string last_name,
-    5: required Date birth_date,
-    6: required Date creation_date,
-    7: optional binary photo
+	2: required string user_name,
+	3: required string email_address,
+	4: required string first_name,
+	5: required string last_name,
+    6: required Date birth_date,
+    7: required Date creation_date,
+    8: optional binary photo
 //    user_type: UserType,
 //    cell_phone: String,
 //    cell_phone_type: CellPlatform,
