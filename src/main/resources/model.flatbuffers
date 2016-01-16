@@ -1,0 +1,10 @@
+namespace com.github.jacek99.snrteam.model.thrift;
+
+enum Color : byte { Red = 1, Green, Blue }
+
+struct Vec3 {
+  x:float;
+  y:float;
+  z:float;
+}
+
