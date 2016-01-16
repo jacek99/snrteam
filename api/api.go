@@ -26,7 +26,6 @@ type RestSystemError struct {
 	Message string
 }
 
-
 func InitRouter(router *gin.Engine) {
 	// REST API
 	rest := router.Group("/snrteam")
