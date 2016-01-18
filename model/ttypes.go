@@ -266,6 +266,7 @@ type User struct {
 	BirthDate    *Date  `thrift:"birth_date,6,required"`
 	CreationDate *Date  `thrift:"creation_date,7,required"`
 	Photo        []byte `thrift:"photo,8"`
+	PwdHash      string `thrift:"pwd_hash,9"`
 }
 
 func NewUser() *User {
@@ -274,6 +275,10 @@ func NewUser() *User {
 
 func (p *User) IsSetPhoto() bool {
 	return p.Photo != nil
+}
+
+func (p *User) IsSetPwdHash() bool {
+	return p.PwdHash != ""
 }
 
 func (p *User) Read(iprot thrift.TProtocol) error {
@@ -319,6 +324,10 @@ func (p *User) Read(iprot thrift.TProtocol) error {
 			}
 		case 8:
 			if err := p.readField8(iprot); err != nil {
+				return err
+			}
+		case 9:
+			if err := p.readField9(iprot); err != nil {
 				return err
 			}
 		default:
@@ -406,6 +415,15 @@ func (p *User) readField8(iprot thrift.TProtocol) error {
 	return nil
 }
 
+func (p *User) readField9(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return fmt.Errorf("error reading field 9: %s")
+	} else {
+		p.PwdHash = v
+	}
+	return nil
+}
+
 func (p *User) Write(oprot thrift.TProtocol) error {
 	if err := oprot.WriteStructBegin("User"); err != nil {
 		return fmt.Errorf("%T write struct begin error: %s", p, err)
@@ -432,6 +450,9 @@ func (p *User) Write(oprot thrift.TProtocol) error {
 		return err
 	}
 	if err := p.writeField8(oprot); err != nil {
+		return err
+	}
+	if err := p.writeField9(oprot); err != nil {
 		return err
 	}
 	if err := oprot.WriteFieldStop(); err != nil {
@@ -550,6 +571,21 @@ func (p *User) writeField8(oprot thrift.TProtocol) (err error) {
 			if err := oprot.WriteFieldEnd(); err != nil {
 				return fmt.Errorf("%T write field end error 8:photo: %s", p, err)
 			}
+		}
+	}
+	return err
+}
+
+func (p *User) writeField9(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPwdHash() {
+		if err := oprot.WriteFieldBegin("pwd_hash", thrift.STRING, 9); err != nil {
+			return fmt.Errorf("%T write field begin error 9:pwd_hash: %s", p, err)
+		}
+		if err := oprot.WriteString(string(p.PwdHash)); err != nil {
+			return fmt.Errorf("%T.pwd_hash (9) field write error: %s", p)
+		}
+		if err := oprot.WriteFieldEnd(); err != nil {
+			return fmt.Errorf("%T write field end error 9:pwd_hash: %s", p, err)
 		}
 	}
 	return err

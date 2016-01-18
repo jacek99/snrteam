@@ -2,42 +2,43 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/nicksnyder/go-i18n/i18n"
 	"github.com/jacek99/snrteam/database"
-	"log"
 	"net/http"
-	"github.com/jacek99/snrteam/common"
+	"github.com/jacek99/snrteam/model"
 )
-
-const USER_NAME = "UserName"
-
 
 func getAllUsers(c *gin.Context) {
 	if users, err := database.GetAllUsers(); err != nil {
-		log.Println(err)
-		c.Error(err)
+		handleError(c, err)
 	} else {
 		c.JSON(http.StatusOK, users)
 	}
 }
 
 func getUser(c *gin.Context) {
-	userName := c.Param(USER_NAME)
-	if user, err := database.GetUserByName(userName); err != nil {
-		if err == common.RECORD_NOT_FOUND_ERROR {
-			T, _ := i18n.Tfunc(getRequestLanguage(c))
-			params := map[string]interface{}{USER_NAME:userName}
-			c.JSON(http.StatusNotFound, RestError{T("user_not_found",params),T("user"),USER_NAME, userName})
-		} else {
-			log.Println(err)
-			c.JSON(http.StatusInternalServerError, RestSystemError{"System error occurred."})
-		}
+	T := getI18n(c)
+	if entity, err := database.GetUserByName(c.Param(database.USER_NAME),T); err != nil {
+		handleError(c, err)
 	} else {
-		c.JSON(http.StatusOK, user)
+		c.JSON(http.StatusOK, entity)
 	}
 }
 
+func saveUser(c *gin.Context) {
+	var user model.User
+	T := getI18n(c)
 
+	if err := c.BindJSON(&user); err == nil {
+		if err = database.SaveUser(&user,T); err == nil {
+			c.JSON(http.StatusCreated,nil)
+		} else {
+			handleError(c,err)
+		}
+	} else {
+		handleError(c, err)
+	}
+
+}
 
 
 

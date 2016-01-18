@@ -1,5 +1,11 @@
 - id: user_not_found
-  translation: User '{{.UserName}}' not found
+  translation: User '{{.Count}}' not found
+
+- id: user_id_not_found
+  translation: User ID '{{.Count}}' not found
+
+- id: user__exists
+  translation: User '{{.Count}}' already exists
 
 - id: user
   translation: User

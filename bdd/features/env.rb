@@ -11,7 +11,7 @@ AfterConfiguration do |config|
 end
 
 Before do
-  # clear_cache()
+  clear_cache()
   @http_headers = {}
 end
 
@@ -32,7 +32,7 @@ def clear_cache()
     host = doc[1]["host"]
 
     http = Net::HTTP.new(host, port)
-    request = Net::HTTP::Post.new("/tasks/clearData")
+    request = Net::HTTP::Post.new("/admin/tasks/test/truncate")
     request.basic_auth("ops","password")
     response = http.request(request)
     response.code.should == "200"

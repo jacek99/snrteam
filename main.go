@@ -6,8 +6,8 @@ import (
 	"github.com/jacek99/snrteam/api"
 	"github.com/jacek99/snrteam/database"
 	"github.com/jacek99/snrteam/server"
-	"log"
 	"github.com/nicksnyder/go-i18n/i18n"
+	"log"
 )
 
 func main() {
