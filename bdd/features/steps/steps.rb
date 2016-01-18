@@ -30,8 +30,15 @@ end
 
 ###### WHEN ##############
 
-When /^"(.+):(.+)" sends (POST|PUT|PATCH) "(.+)" with "([^"]+)"$/ do |user,password,method,url,parameters|
+# supports multi-line parameters for large objects
+When(/"(.+):(.+)" sends (POST|PUT|PATCH) "(.+)" with$/) do |user,password,method,url,parameters|
+  http, request = get_http_request(method,url, user, password)
+  apply_form_parameters(request,parameters)
+  execute_http_request(http,request)
+end
 
+
+When /^"(.+):(.+)" sends (POST|PUT|PATCH) "(.+)" with "([^"]+)"$/ do |user,password,method,url,parameters|
   http, request = get_http_request(method,url, user, password)
   apply_form_parameters(request,parameters)
   execute_http_request(http,request)

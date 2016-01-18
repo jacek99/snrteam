@@ -97,10 +97,8 @@ func GetUserByName(userName string, T i18n.TranslateFunc) (*model.User, error) {
 
 // Saves a user, if it exists error occurs
 func SaveUser(user *model.User, T i18n.TranslateFunc)  error  {
-	existing, err := GetUser(user.UserId, T)
-	if err != nil {
-		return err
-	}
+
+	existing, _ := GetUser(user.UserId, T);
 
 	if existing == nil {
 
@@ -108,6 +106,10 @@ func SaveUser(user *model.User, T i18n.TranslateFunc)  error  {
 			// put both user by ID as well as the index by name
 			b := getBucket(tx, user_bucket)
 			idx := getBucket(tx, users_name2id_idx)
+
+			// generate numeric user ID
+			id, _ := b.NextSequence()
+			user.UserId = int64(id)
 
 			if err := putInt64(b, user.UserId, model.Go2Thrift(user));err != nil {
 				return err

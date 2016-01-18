@@ -34,31 +34,72 @@ Feature: User REST Service
       #| DELETE  | admin |
 
 
-#  @country_add
-#  Scenario: Add one
-#    # add and return JSON as part of the payload
-#    When "admin:test" sends POST "/myapp/services/rest/country" with "countryCode=PL&name=Poland"
-#    Then I expect HTTP code 201
-#    And I expect JSON equivalent to
-#    """
-#      {
-#          "countryCode": "PL",
-#          "name": "Poland"
-#      }
-#    """
-#    And I expect HTTP header "location" equals "/country/PL"
-#    # verify it got added
-#    When "read:test" sends GET "/myapp/services/rest/country"
-#    Then I expect HTTP code 200
-#    And I expect JSON equivalent to
-#    """
-#      [
-#          {
-#              "countryCode": "PL",
-#              "name": "Poland"
-#          }
-#      ]
-#    """
+  @user_add
+  Scenario: Add one
+    # add and return JSON as part of the payload
+    When "admin:test" sends POST "/snrteam/api/users" with
+    """
+    UserName=TEST_USER&
+    EmailAddress=john.doe@gmail.com&
+    FirstName=John&
+    LastName=Doe&
+    """
+    Then I expect HTTP code 201
+    And I expect JSON equivalent to
+    """
+      {
+        "UserId": 1,
+        "UserName": "TEST_USER",
+        "EmailAddress": "john.doe@gmail.com",
+        "FirstName": "John",
+        "LastName": "Doe",
+        "BirthDate": null,
+        "CreationDate": null,
+        "Photo": null,
+        "PwdHash": ""
+      }
+    """
+
+    # verify single API
+    When "read:test" sends GET "/snrteam/api/users/TEST_USER"
+    Then I expect HTTP code 200
+    And I expect JSON equivalent to
+    """
+      {
+        "UserId": 1,
+        "UserName": "TEST_USER",
+        "EmailAddress": "john.doe@gmail.com",
+        "FirstName": "John",
+        "LastName": "Doe",
+        "BirthDate": null,
+        "CreationDate": null,
+        "Photo": null,
+        "PwdHash": ""
+      }
+    """
+
+    # verify all API
+    When "read:test" sends GET "/snrteam/api/users"
+    Then I expect HTTP code 200
+    And I expect JSON equivalent to
+    """
+      [
+        {
+          "UserId": 1,
+          "UserName": "TEST_USER",
+          "EmailAddress": "john.doe@gmail.com",
+          "FirstName": "John",
+          "LastName": "Doe",
+          "BirthDate": null,
+          "CreationDate": null,
+          "Photo": null,
+          "PwdHash": ""
+        }
+      ]
+    """
+
+
+
 #
 #  @country_add_error
 #  Scenario Outline: Add error handling

@@ -6,9 +6,6 @@ import (
 	"github.com/jacek99/snrteam/common"
 	"log"
 	"github.com/nicksnyder/go-i18n/i18n"
-	_ "github.com/jacek99/snrteam/model"
-	_"git.apache.org/thrift.git/lib/go/thrift"
-	_ "github.com/jacek99/snrteam/model"
 )
 
 const DEFAULT_LANGUAGE = "en-us"

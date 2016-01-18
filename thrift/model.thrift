@@ -49,8 +49,8 @@ struct User {
 	3: required string email_address,
 	4: required string first_name,
 	5: required string last_name,
-    6: required Date birth_date,
-    7: required Date creation_date,
+    6: optional Date birth_date,
+    7: optional Date creation_date,
     8: optional binary photo
     9: optional string pwd_hash
 //    user_type: UserType,

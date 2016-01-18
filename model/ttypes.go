@@ -263,14 +263,22 @@ type User struct {
 	EmailAddress string `thrift:"email_address,3,required"`
 	FirstName    string `thrift:"first_name,4,required"`
 	LastName     string `thrift:"last_name,5,required"`
-	BirthDate    *Date  `thrift:"birth_date,6,required"`
-	CreationDate *Date  `thrift:"creation_date,7,required"`
+	BirthDate    *Date  `thrift:"birth_date,6"`
+	CreationDate *Date  `thrift:"creation_date,7"`
 	Photo        []byte `thrift:"photo,8"`
 	PwdHash      string `thrift:"pwd_hash,9"`
 }
 
 func NewUser() *User {
 	return &User{}
+}
+
+func (p *User) IsSetBirthDate() bool {
+	return p.BirthDate != nil
+}
+
+func (p *User) IsSetCreationDate() bool {
+	return p.CreationDate != nil
 }
 
 func (p *User) IsSetPhoto() bool {
@@ -531,14 +539,16 @@ func (p *User) writeField5(oprot thrift.TProtocol) (err error) {
 
 func (p *User) writeField6(oprot thrift.TProtocol) (err error) {
 	if p.BirthDate != nil {
-		if err := oprot.WriteFieldBegin("birth_date", thrift.STRUCT, 6); err != nil {
-			return fmt.Errorf("%T write field begin error 6:birth_date: %s", p, err)
-		}
-		if err := p.BirthDate.Write(oprot); err != nil {
-			return fmt.Errorf("%T error writing struct: %s", p.BirthDate)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 6:birth_date: %s", p, err)
+		if p.IsSetBirthDate() {
+			if err := oprot.WriteFieldBegin("birth_date", thrift.STRUCT, 6); err != nil {
+				return fmt.Errorf("%T write field begin error 6:birth_date: %s", p, err)
+			}
+			if err := p.BirthDate.Write(oprot); err != nil {
+				return fmt.Errorf("%T error writing struct: %s", p.BirthDate)
+			}
+			if err := oprot.WriteFieldEnd(); err != nil {
+				return fmt.Errorf("%T write field end error 6:birth_date: %s", p, err)
+			}
 		}
 	}
 	return err
@@ -546,14 +556,16 @@ func (p *User) writeField6(oprot thrift.TProtocol) (err error) {
 
 func (p *User) writeField7(oprot thrift.TProtocol) (err error) {
 	if p.CreationDate != nil {
-		if err := oprot.WriteFieldBegin("creation_date", thrift.STRUCT, 7); err != nil {
-			return fmt.Errorf("%T write field begin error 7:creation_date: %s", p, err)
-		}
-		if err := p.CreationDate.Write(oprot); err != nil {
-			return fmt.Errorf("%T error writing struct: %s", p.CreationDate)
-		}
-		if err := oprot.WriteFieldEnd(); err != nil {
-			return fmt.Errorf("%T write field end error 7:creation_date: %s", p, err)
+		if p.IsSetCreationDate() {
+			if err := oprot.WriteFieldBegin("creation_date", thrift.STRUCT, 7); err != nil {
+				return fmt.Errorf("%T write field begin error 7:creation_date: %s", p, err)
+			}
+			if err := p.CreationDate.Write(oprot); err != nil {
+				return fmt.Errorf("%T error writing struct: %s", p.CreationDate)
+			}
+			if err := oprot.WriteFieldEnd(); err != nil {
+				return fmt.Errorf("%T write field end error 7:creation_date: %s", p, err)
+			}
 		}
 	}
 	return err
