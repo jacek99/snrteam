@@ -39,7 +39,7 @@ func GetAllUsers() ([]*model.User, error) {
 		c := b.Cursor()
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
-			users = append(users, model.Unmarshall(model.User{},v).(*model.User))
+			users = append(users, model.Unmarshall(v,new(model.User)).(*model.User))
 		}
 
 		return nil
@@ -60,7 +60,7 @@ func GetUser(userId int64, T i18n.TranslateFunc) (*model.User, error) {
 
 		b := getBucket(tx,user_bucket)
 		if data := getInt64(b,userId); data != nil {
-			user = model.Unmarshall(model.User{},data).(*model.User)
+			user = model.Unmarshall(data,new(model.User)).(*model.User)
 			return nil
 		} else {
 			return common.NotFoundError{T("user_id_not_found", userId),T("user"),USER_ID,userId}
@@ -83,8 +83,9 @@ func GetUserByName(userName string, T i18n.TranslateFunc) (*model.User, error) {
 
 		b := getBucket(tx,users_name2id_idx)
 		if data := getString(b,userName); data != nil {
-			user, _= GetUser(btoi(data), T)
-			return nil
+			var err error
+			user, err = GetUser(btoi(data), T)
+			return err
 		} else {
 			return common.NotFoundError{T("user_not_found", userName),T("user"),USER_NAME,userName}
 		}
@@ -109,7 +110,6 @@ func SaveUser(user *model.User, password string, T i18n.TranslateFunc)  error  {
 		}
 
 		user.CreationDate = model.Date(time.Now())
-		user.BirthDate = model.Date(time.Now())
 
 		return Database.Update(func(tx *bolt.Tx) error {
 			// put both user by ID as well as the index by name
@@ -121,9 +121,11 @@ func SaveUser(user *model.User, password string, T i18n.TranslateFunc)  error  {
 			user.UserId = int64(id)
 
 			if err := putInt64(b, user.UserId, model.Marshall(user));err != nil {
+				log.Printf("Failed to save to users bucket for %s: %s",user.UserId,err)
 				return err
 			} else {
 				if err = putString(idx,user.UserName, itob(user.UserId)); err != nil {
+					log.Printf("Failed to save to user index bucket for user '%s': %s",user.UserName,err)
 					return err
 				}
 			}

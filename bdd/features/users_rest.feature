@@ -37,12 +37,17 @@ Feature: User REST Service
   @user_add
   Scenario: Add one
     # add and return JSON as part of the payload
-    When "admin:test" sends POST "/snrteam/api/users" with
+    When "admin:test" sends POST "/snrteam/api/users" with JSON
     """
-    UserName=TEST_USER&
-    EmailAddress=john.doe@gmail.com&
-    FirstName=John&
-    LastName=Doe&
+     {
+        "UserName": "TEST_USER",
+        "EmailAddress": "john.doe@gmail.com",
+        "FirstName": "John",
+        "LastName": "Doe",
+        "BirthDate": "1980-06-27",
+        "Active": true,
+        "Password": "test_password"
+      }
     """
     Then I expect HTTP code 201
     And I expect JSON equivalent to
@@ -52,32 +57,35 @@ Feature: User REST Service
         "EmailAddress": "john.doe@gmail.com",
         "FirstName": "John",
         "LastName": "Doe",
-        "BirthDate": null,
-        "CreationDate": null,
+        "BirthDate": "1980-06-27",
         "Active": true
       }
     """
 
-    When "admin:test" sends POST "/snrteam/api/users" with
+    When "admin:test" sends POST "/snrteam/api/users" with JSON
     """
-    UserName=TEST_USER2&
-    EmailAddress=john.doe2@gmail.com&
-    FirstName=John&
-    LastName=Doe 2&
+      {
+        "UserName": "TEST_USER2",
+        "EmailAddress": "john.doe2@gmail.com",
+        "FirstName": "John",
+        "LastName": "Doe 2",
+        "BirthDate":"1980-01-01",
+        "Active": true,
+        "Password": "test_password2"
+      }
     """
     Then I expect HTTP code 201
     And I expect JSON equivalent to
     """
       {
-        "UserId": 1,
         "UserName": "TEST_USER2",
         "EmailAddress": "john.doe2@gmail.com",
         "FirstName": "John",
-        "LastName": "Doe ",
+        "LastName": "Doe 2",
+        "BirthDate":"1980-01-01",
         "Active": true
       }
     """
-
 
     # verify single API
     When "read:test" sends GET "/snrteam/api/users/TEST_USER"
@@ -89,8 +97,8 @@ Feature: User REST Service
         "EmailAddress": "john.doe@gmail.com",
         "FirstName": "John",
         "LastName": "Doe",
-        "BirthDate": null,
-        "CreationDate": null
+        "Active": true,
+        "BirthDate": "1980-06-27"
       }
     """
 
@@ -105,8 +113,14 @@ Feature: User REST Service
           "EmailAddress": "john.doe@gmail.com",
           "FirstName": "John",
           "LastName": "Doe",
-          "BirthDate": null,
-          "CreationDate": null
+          "BirthDate": "1980-06-27"
+        },
+        {
+          "UserName": "TEST_USER2",
+          "EmailAddress": "john.doe2@gmail.com",
+          "FirstName": "John",
+          "LastName": "Doe 2",
+          "BirthDate": "1980-01-01"
         }
       ]
     """

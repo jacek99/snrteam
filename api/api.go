@@ -6,6 +6,7 @@ import (
 	"github.com/jacek99/snrteam/common"
 	"log"
 	"github.com/nicksnyder/go-i18n/i18n"
+	"runtime/debug"
 )
 
 const DEFAULT_LANGUAGE = "en-us"
@@ -62,8 +63,10 @@ func getI18n(c *gin.Context) i18n.TranslateFunc {
 }
 
 // standard error handler
-func handleError(c *gin.Context, err error) {
-	log.Println(err)
+func handleError(c *gin.Context,  errorContext string, err error) {
+	log.Printf("%s: %s", errorContext, err)
+	debug.PrintStack()
+
 	switch t := err.(type) {
 	case common.NotFoundError:
 		c.JSON(http.StatusNotFound, err)
