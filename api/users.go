@@ -9,17 +9,9 @@ import (
 
 // special structs for user to allow specifying / hiding password field
 type InputUser struct {
-	UserId       int64  `thrift:"user_id,1,required"`
-	UserName     string `thrift:"user_name,2,required"`
-	EmailAddress string `thrift:"email_address,3,required"`
-	FirstName    string `thrift:"first_name,4,required"`
-	LastName     string `thrift:"last_name,5,required"`
-	BirthDate    *model.Date  `thrift:"birth_date,6,required"`
-	CreationDate *model.Date  `thrift:"creation_date,7,required"`
-	Photo        []byte `thrift:"photo,8"`
-	Password     string `thrift:"pwd_hash,9"`
+	model.User
+	Password     string
 }
-
 
 func getAllUsers(c *gin.Context) {
 	if users, err := database.GetAllUsers(); err != nil {
@@ -39,11 +31,11 @@ func getUser(c *gin.Context) {
 }
 
 func saveUser(c *gin.Context) {
-	var input model.User
+	var input InputUser
 	T := getI18n(c)
 
 	if err := c.Bind(&input); err == nil {
-		if err = database.SaveUser(&input,T); err == nil {
+		if err = database.SaveUser(&input.User,input.Password, T); err == nil {
 			c.JSON(http.StatusCreated, input)
 		} else {
 			handleError(c,err)

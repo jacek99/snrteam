@@ -1,3 +1,9 @@
+- id: required_field
+  translation: Field '{{.Count}}' is mandatory
+
+- id: invalid_email
+  translation: Field '{{.Count}}' must be a valid email address
+
 - id: user_not_found
   translation: User '{{.Count}}' not found
 
@@ -9,3 +15,4 @@
 
 - id: user
   translation: User
+

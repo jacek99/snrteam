@@ -6,6 +6,8 @@ import (
 	"github.com/jacek99/snrteam/common"
 	"github.com/nicksnyder/go-i18n/i18n"
 	"log"
+	"golang.org/x/crypto/bcrypt"
+	"time"
 )
 
 const USER_NAME = "UserName"
@@ -25,11 +27,7 @@ func init() {
 	}
 }
 
-func thrift2User(v []byte) *model.User {
-	user := model.NewUser()
-	model.Thrift2Go(v,user)
-	return user
-}
+
 
 func GetAllUsers() ([]*model.User, error) {
 
@@ -41,7 +39,7 @@ func GetAllUsers() ([]*model.User, error) {
 		c := b.Cursor()
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
-			users = append(users, thrift2User(v))
+			users = append(users, model.Unmarshall(model.User{},v).(*model.User))
 		}
 
 		return nil
@@ -62,7 +60,7 @@ func GetUser(userId int64, T i18n.TranslateFunc) (*model.User, error) {
 
 		b := getBucket(tx,user_bucket)
 		if data := getInt64(b,userId); data != nil {
-			user = thrift2User(data)
+			user = model.Unmarshall(model.User{},data).(*model.User)
 			return nil
 		} else {
 			return common.NotFoundError{T("user_id_not_found", userId),T("user"),USER_ID,userId}
@@ -96,11 +94,22 @@ func GetUserByName(userName string, T i18n.TranslateFunc) (*model.User, error) {
 }
 
 // Saves a user, if it exists error occurs
-func SaveUser(user *model.User, T i18n.TranslateFunc)  error  {
+
+func SaveUser(user *model.User, password string, T i18n.TranslateFunc)  error  {
 
 	existing, _ := GetUser(user.UserId, T);
 
 	if existing == nil {
+
+		// convert password to hash
+		if hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password),bcrypt.DefaultCost); err != nil {
+			panic(err)
+		} else {
+			user.PwdHash = hashedPassword
+		}
+
+		user.CreationDate = model.Date(time.Now())
+		user.BirthDate = model.Date(time.Now())
 
 		return Database.Update(func(tx *bolt.Tx) error {
 			// put both user by ID as well as the index by name
@@ -111,7 +120,7 @@ func SaveUser(user *model.User, T i18n.TranslateFunc)  error  {
 			id, _ := b.NextSequence()
 			user.UserId = int64(id)
 
-			if err := putInt64(b, user.UserId, model.Go2Thrift(user));err != nil {
+			if err := putInt64(b, user.UserId, model.Marshall(user));err != nil {
 				return err
 			} else {
 				if err = putString(idx,user.UserName, itob(user.UserId)); err != nil {

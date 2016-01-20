@@ -48,17 +48,36 @@ Feature: User REST Service
     And I expect JSON equivalent to
     """
       {
-        "UserId": 1,
         "UserName": "TEST_USER",
         "EmailAddress": "john.doe@gmail.com",
         "FirstName": "John",
         "LastName": "Doe",
         "BirthDate": null,
         "CreationDate": null,
-        "Photo": null,
-        "PwdHash": ""
+        "Active": true
       }
     """
+
+    When "admin:test" sends POST "/snrteam/api/users" with
+    """
+    UserName=TEST_USER2&
+    EmailAddress=john.doe2@gmail.com&
+    FirstName=John&
+    LastName=Doe 2&
+    """
+    Then I expect HTTP code 201
+    And I expect JSON equivalent to
+    """
+      {
+        "UserId": 1,
+        "UserName": "TEST_USER2",
+        "EmailAddress": "john.doe2@gmail.com",
+        "FirstName": "John",
+        "LastName": "Doe ",
+        "Active": true
+      }
+    """
+
 
     # verify single API
     When "read:test" sends GET "/snrteam/api/users/TEST_USER"
@@ -66,15 +85,12 @@ Feature: User REST Service
     And I expect JSON equivalent to
     """
       {
-        "UserId": 1,
         "UserName": "TEST_USER",
         "EmailAddress": "john.doe@gmail.com",
         "FirstName": "John",
         "LastName": "Doe",
         "BirthDate": null,
-        "CreationDate": null,
-        "Photo": null,
-        "PwdHash": ""
+        "CreationDate": null
       }
     """
 
@@ -85,15 +101,12 @@ Feature: User REST Service
     """
       [
         {
-          "UserId": 1,
           "UserName": "TEST_USER",
           "EmailAddress": "john.doe@gmail.com",
           "FirstName": "John",
           "LastName": "Doe",
           "BirthDate": null,
-          "CreationDate": null,
-          "Photo": null,
-          "PwdHash": ""
+          "CreationDate": null
         }
       ]
     """

@@ -10,6 +10,10 @@ task :deps do
   exec CURRENT_FOLDER, "go get github.com/boltdb/bolt/..."
   exec CURRENT_FOLDER, "go get -u github.com/nicksnyder/go-i18n/goi18n"
   exec CURRENT_FOLDER, "go get gopkg.in/yaml.v2"
+  exec CURRENT_FOLDER, "go get github.com/asaskevich/govalidator"
+  exec CURRENT_FOLDER, "go get golang.org/x/crypto/bcrypt"
+  exec CURRENT_FOLDER, "go get gopkg.in/vmihailenco/msgpack.v2"
+
 end
 
 desc "Generates Go model bindings from Thrift"

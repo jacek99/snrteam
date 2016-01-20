@@ -49,10 +49,12 @@ struct User {
 	3: required string email_address,
 	4: required string first_name,
 	5: required string last_name,
-    6: optional Date birth_date,
-    7: optional Date creation_date,
-    8: optional binary photo
-    9: optional string pwd_hash
+    6: required bool active = 0,
+
+    7: optional Date birth_date,
+    8: optional Date creation_date,
+    9: optional binary photo
+    10: optional binary pwd_hash
 //    user_type: UserType,
 //    cell_phone: String,
 //    cell_phone_type: CellPlatform,
