@@ -19,17 +19,21 @@ Feature: User REST Service
     And I expect JSON equivalent to
     """
       {
-        "Message": "<msg>",
-        "EntityType": "<type>",
-        "EntityField": "UserName",
-        "EntityId": "WRONG_ID"
+        "Errors": [
+          {
+            "Message": "<msg>",
+            "EntityType": "<type>",
+            "EntityField": "UserName",
+            "EntityId": "WRONG_ID"
+          }
+        ]
       }
     """
 
     Examples:
       | method  | user  | lang  | msg                             | type        |
       | GET     | read  | en-US | User 'WRONG_ID' not found       | User        |
-      | GET     | read  | es    | Usuario 'WRONG_ID' no encontrado| Usuario     |
+      | GET     | read  | es    | Usuario 'WRONG_ID' no encontrado| User        |
       #| PATCH   | admin |
       #| DELETE  | admin |
 
@@ -125,9 +129,6 @@ Feature: User REST Service
       ]
     """
 
-
-
-#
 #  @country_add_error
 #  Scenario Outline: Add error handling
 #    When "admin:test" sends POST "/myapp/services/rest/country" with "<params>"

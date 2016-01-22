@@ -5,8 +5,9 @@ import (
 	"github.com/jacek99/snrteam/model"
 	"github.com/jacek99/snrteam/common"
 	"github.com/nicksnyder/go-i18n/i18n"
-	"log"
 	"golang.org/x/crypto/bcrypt"
+
+	"log"
 	"time"
 )
 
@@ -26,8 +27,6 @@ func init() {
 		log.Fatal(err)
 	}
 }
-
-
 
 func GetAllUsers() ([]*model.User, error) {
 
@@ -63,7 +62,7 @@ func GetUser(userId int64, T i18n.TranslateFunc) (*model.User, error) {
 			user = model.Unmarshall(data,new(model.User)).(*model.User)
 			return nil
 		} else {
-			return common.NotFoundError{T("user_id_not_found", userId),T("user"),USER_ID,userId}
+			return common.NotFoundError{T("user_id_not_found", userId),"User",USER_ID,userId}
 		}
 	})
 	if err != nil {
@@ -87,7 +86,7 @@ func GetUserByName(userName string, T i18n.TranslateFunc) (*model.User, error) {
 			user, err = GetUser(btoi(data), T)
 			return err
 		} else {
-			return common.NotFoundError{T("user_not_found", userName),T("user"),USER_NAME,userName}
+			return common.NotFoundError{T("user_not_found", userName),"User",USER_NAME,userName}
 		}
 	})
 
@@ -120,14 +119,22 @@ func SaveUser(user *model.User, password string, T i18n.TranslateFunc)  error  {
 			id, _ := b.NextSequence()
 			user.UserId = int64(id)
 
-			if err := putInt64(b, user.UserId, model.Marshall(user));err != nil {
-				log.Printf("Failed to save to users bucket for %s: %s",user.UserId,err)
+			// validate before saving
+			if err := common.Validate(user,"User"); err != nil {
 				return err
 			} else {
-				if err = putString(idx,user.UserName, itob(user.UserId)); err != nil {
-					log.Printf("Failed to save to user index bucket for user '%s': %s",user.UserName,err)
+
+				// actual DB save
+				if err := putInt64(b, user.UserId, model.Marshall(user));err != nil {
+					log.Printf("Failed to save to users bucket for %s: %s",user.UserId,err)
 					return err
+				} else {
+					if err = putString(idx,user.UserName, itob(user.UserId)); err != nil {
+						log.Printf("Failed to save to user index bucket for user '%s': %s",user.UserName,err)
+						return err
+					}
 				}
+
 			}
 
 			return nil

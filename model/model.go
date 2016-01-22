@@ -43,11 +43,11 @@ func (m *Date) DecodeMsgpack(dec *msgpack.Decoder) error {
 
 
 type User struct {
-	UserId       int64  `json:"-"`
-	UserName     string
-	EmailAddress string
-	FirstName    string
-	LastName     string
+	UserId       int64  `valid:"required",json:"-"`
+	UserName     string `valid:"required"`
+	EmailAddress string `valid:"email,required"`
+	FirstName    string `valid:"required"`
+	LastName     string `valid:"required"`
 	Active       bool
 	BirthDate    Date
 	CreationDate Date

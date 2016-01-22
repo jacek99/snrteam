@@ -67,15 +67,31 @@ func handleError(c *gin.Context,  errorContext string, err error) {
 	log.Printf("%s: %s", errorContext, err)
 	debug.PrintStack()
 
+	reqError := common.RequestError{}
+
 	switch t := err.(type) {
+	case common.BadRequestError:
+		reqError.Errors = append(reqError.Errors,common.GenericError(err.(common.BadRequestError)))
+		c.JSON(http.StatusBadRequest,reqError)
+	case common.BadRequestErrors:
+		errs  := []common.BadRequestError(err.(common.BadRequestErrors))
+		for _, single := range errs {
+			reqError.Errors = append(reqError.Errors, common.GenericError(single))
+		}
+		c.JSON(http.StatusBadRequest, reqError)
 	case common.NotFoundError:
-		c.JSON(http.StatusNotFound, err)
+		reqError.Errors = append(reqError.Errors,common.GenericError(err.(common.NotFoundError)))
+		c.JSON(http.StatusNotFound, reqError)
 	case common.ConflictError:
-		c.JSON(http.StatusConflict, err)
+		reqError.Errors = append(reqError.Errors,common.GenericError(err.(common.ConflictError)))
+		c.JSON(http.StatusConflict, reqError)
 	case common.GenericError:
-		c.JSON(http.StatusInternalServerError, err)
+		reqError.Errors = append(reqError.Errors,err.(common.GenericError))
+		c.JSON(http.StatusInternalServerError, reqError)
 	default:
 		_ = t
-		c.JSON(http.StatusInternalServerError, "Server error. Please consult support")
+		reqError.Errors = append(reqError.Errors,common.GenericError{"Server error. Please consult support","","",nil})
+		c.JSON(http.StatusInternalServerError, reqError)
 	}
 }
+
